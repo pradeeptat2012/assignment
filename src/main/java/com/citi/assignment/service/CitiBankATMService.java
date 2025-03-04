@@ -2,10 +2,15 @@ package com.citi.assignment.service;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CitiBankATMService {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(CitiBankATMService.class);
+	
 	// Denominations available in the ATM
     private final int[] denominations = {1000, 500, 100, 10};
 
@@ -16,6 +21,9 @@ public class CitiBankATMService {
      * Withdraws the given amount and returns the result asynchronously.
      */
     public CompletableFuture<String> withdrawCitiCash(int amount) {
+    	
+    	LOGGER.info("Inside withdrawCitiCash()method of CitiBankATMService!");
+    	
         return CompletableFuture.supplyAsync(() -> processCitiWithdrawal(amount));
     }
 
@@ -23,6 +31,9 @@ public class CitiBankATMService {
      * Process the withdrawal, ensuring minimum notes are dispensed.
      */
     private String processCitiWithdrawal(int amount) {
+    	
+    	LOGGER.info("Inside processCitiWithdrawal()method of CitiBankATMService!");
+    	
         StringBuilder response = new StringBuilder("Withdrawal Successful: ");
         int[] notesToDispense = new int[denominations.length];
 
