@@ -20,19 +20,19 @@ public class CitiBankATMService {
     /**
      * Withdraws the given amount and returns the result asynchronously.
      */
-    public CompletableFuture<String> withdrawCitiCash(int amount) {
+    public CompletableFuture<String> cashWithdrawl(int amount) {
     	
-    	LOGGER.info("Inside withdrawCitiCash()method of CitiBankATMService!");
+    	LOGGER.info("Inside cashWithdrawl()method of CitiBankATMService!");
     	
-        return CompletableFuture.supplyAsync(() -> processCitiWithdrawal(amount));
+        return CompletableFuture.supplyAsync(() -> processCashWithdrawl(amount));
     }
 
     /**
      * Process the withdrawal, ensuring minimum notes are dispensed.
      */
-    private String processCitiWithdrawal(int amount) {
+    private String processCashWithdrawl(int amount) {
     	
-    	LOGGER.info("Inside processCitiWithdrawal()method of CitiBankATMService!");
+    	LOGGER.info("Inside processCashWithdrawl()method of CitiBankATMService!");
     	
         StringBuilder response = new StringBuilder("Withdrawal Successful: ");
         int[] notesToDispense = new int[denominations.length];

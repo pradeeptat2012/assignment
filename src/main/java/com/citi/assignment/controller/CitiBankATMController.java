@@ -22,11 +22,11 @@ public class CitiBankATMController {
     private CitiBankATMService atmService;
 
     @PostMapping("/withdraw")
-    public CompletableFuture<String> withdrawCitiCash(@RequestParam int amount) {
+    public CompletableFuture<String> cashWithdrawl(@RequestParam int amount) {
     	
-    	LOGGER.info("Inside withdrawCitiCash()method of CitiBankATMController!");
+    	LOGGER.info("Inside cashWithdrawl()method of CitiBankATMController!");
     	
-        return atmService.withdrawCitiCash(amount);
+        return atmService.cashWithdrawl(amount);
     }
 
 }
