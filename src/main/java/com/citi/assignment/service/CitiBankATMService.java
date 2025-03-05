@@ -24,7 +24,18 @@ public class CitiBankATMService {
     	
     	LOGGER.info("Inside cashWithdrawl()method of CitiBankATMService!");
     	
-        return CompletableFuture.supplyAsync(() -> processCashWithdrawl(amount));
+    	// Handle potential exception in async operation
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return processCashWithdrawl(amount);
+            } catch (IllegalArgumentException e) {
+                LOGGER.error("Invalid argument: ", e);
+                return "Error: " + e.getMessage();
+            } catch (Exception e) {
+                LOGGER.error("Unexpected error: ", e);
+                return "An unexpected error occurred during the withdrawal process.";
+            }
+        });
     }
 
     /**
@@ -39,20 +50,25 @@ public class CitiBankATMService {
 
         // Check if the amount is a multiple of 10 (required by ATM)
         if (amount % 10 != 0) {
-            return "Amount should be a multiple of 10!";
+        	throw new IllegalArgumentException("Amount must be greater than zero.");
         }
 
-        for (int i = 0; i < denominations.length; i++) {
-            if (amount == 0) break;
+        try {
+            for (int i = 0; i < denominations.length; i++) {
+                if (amount == 0) break;
 
-            // Calculate the maximum number of notes of this denomination
-            int maxNotes = Math.min(amount / denominations[i], availableCash[i]);
+                // Calculate the maximum number of notes of this denomination
+                int maxNotes = Math.min(amount / denominations[i], availableCash[i]);
 
-            // If we can dispense this denomination, do so
-            if (maxNotes > 0) {
-                notesToDispense[i] = maxNotes;
-                amount -= maxNotes * denominations[i];
+                // If we can dispense this denomination, do so
+                if (maxNotes > 0) {
+                    notesToDispense[i] = maxNotes;
+                    amount -= maxNotes * denominations[i];
+                }
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.error("Array index out of bounds during withdrawal processing: ", e);
+            return "Error during withdrawal process. Please try again.";
         }
 
         // Check if amount is zero after the process, if not, insufficient funds
